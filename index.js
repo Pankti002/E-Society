@@ -5,6 +5,7 @@ const suggestionController = require("./Controller/suggestionController")
 const roleController =require("./Controller/roleController")
 const staffController=require("./Controller/staffController")
 const maintenanceController=require("./Controller/maintenanceController")
+const houseController = require("./Controller/houseController")
 
 
 const app = express()  
@@ -43,6 +44,12 @@ app.get("/maintenance",maintenanceController.getAllMaintenance)
 app.post("/maintenance",maintenanceController.addMaintenance)
 app.put("/maintenance",maintenanceController.updateMaintenance)
 app.delete("/maintenance",maintenanceController.deleteMaintenance)
+
+//House Api
+app.get("/house",houseController.getAllHouses)
+app.post("/house",houseController.addHouse)
+app.put("/house",houseController.updateHouse)
+app.delete("/house",houseController.deletehouse)
 
 
 mongoose.connect("mongodb://localhost/amazon2022",function(err){

@@ -4,6 +4,7 @@ const UserModel=require("../Model/userModel")
 module.exports.addUser=function(req,res){
     let flatNo=req.body.flatNo
     let role =req.body.role
+    let house =req.body.house
     let firstName=req.body.firstName
     let lastName=req.body.lastName
     let dateOfBirth=req.body.dateOfBirth
@@ -16,13 +17,14 @@ module.exports.addUser=function(req,res){
     let user=new UserModel({
         "flatNo":flatNo,
         "role":role,
+        "house":house,
         "firstName":firstName,
         "lastName":lastName,
         "dateOfBirth":dateOfBirth,
         "age":age,
         "gender":gender,
         "contactNo":contactNo,
-        "email":email,
+        "email":email
     })
 
     user.save(function(err,data){
@@ -106,7 +108,7 @@ module.exports.deleteUser=function(req,res){
 
 //List Mmebers
 module.exports.getAllUsers=function(req,res){
-    UserModel.find().populate("role").exec(function(err,data){
+    UserModel.find().populate("role").populate("house").exec(function(err,data){
         if(err){
             console.log(err)
             res.json({

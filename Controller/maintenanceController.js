@@ -2,6 +2,7 @@ const MaintenanceModel=require("../Model/maintenanceModel")
 
 //add Maintenance
 module.exports.addMaintenance=function(req,res){
+    let house=req.body.house
     let creationDate=req.body.creationDate
     let month=req.body.month
     let maintenanceAmount=req.body.maintenanceAmount
@@ -11,6 +12,7 @@ module.exports.addMaintenance=function(req,res){
     let fine=req.body.fine
 
     let maintenance=new MaintenanceModel({
+        "house":house,
         "creationDate":creationDate,
         "month":month,
         "maintenanceAmount":maintenanceAmount,
@@ -109,7 +111,7 @@ module.exports.deleteMaintenance=function(req,res){
 
 //List Maintenance
 module.exports.getAllMaintenance=function(req,res){
-    MaintenanceModel.find(function(err,data){
+    MaintenanceModel.find().populate("house").exec(function(err,data){
         if(err)
         {
             console.log(err)

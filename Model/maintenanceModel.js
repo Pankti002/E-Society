@@ -7,7 +7,11 @@ const maintenanceSchema=new mongoose.Schema({
     maintenancePaid:Boolean,
     paymentDate:String,
     lastDate:String,
-    fine:Number
+    fine:Number,
+    house:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"House"
+    }
 })
 
 module.exports=mongoose.model("Maintenance",maintenanceSchema)
