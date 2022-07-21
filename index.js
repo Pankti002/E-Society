@@ -15,7 +15,7 @@ app.use(express.urlencoded({extended:true}))
 
 
 
-//Users Api pankti
+// Users Api pankti
 app.get("/user",userController.getAllUsers)
 app.post("/user",userController.addUser)
 app.put("/user",userController.updateUser)
