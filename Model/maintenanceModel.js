@@ -3,11 +3,11 @@ const mongoose=require("mongoose")
 const maintenanceSchema=new mongoose.Schema({
     creationDate:String,
     month:String,
-    maintenanceAmount:Number,
-    maintenancePaid:Boolean,
+    maintenanceAmount:String,
+    maintenancePaid:String,
     paymentDate:String,
     lastDate:String,
-    penalty:Number,
+    penalty:String,
     house:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"House"

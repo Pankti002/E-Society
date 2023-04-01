@@ -8,6 +8,8 @@ module.exports.addRole = function (req, res) {
         "roleName": roleName
     })
 
+    console.log("body",req.body)
+
     let isError = false
     let err = []
 
@@ -124,7 +126,8 @@ module.exports.updateRole = function (req, res) {
 
 //deleteRole
 module.exports.deleteRole = function (req, res) {
-    let roleId = req.body.roleId
+    let roleId = req.params.roleId
+    console.log("params",req.params)
     RoleModel.deleteOne({ _id: roleId }, function (err, data) {
         if (err) {
             console.log(err)

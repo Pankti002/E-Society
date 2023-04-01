@@ -9,9 +9,6 @@ module.exports.addStaff=function(req,res){
     let exitTime=req.body.exitTime
     let contactNo=req.body.contactNo
     let address=req.body.address
-    let email=req.body.email
-    let password=req.body.password
-    let isAllowed=req.body.isAllowed
     let agencyName=req.body.agencyName
     let agencyContactNumber=req.body.agencyContactNumber
 
@@ -26,9 +23,6 @@ module.exports.addStaff=function(req,res){
         "exitTime":exitTime,
         "contactNo":contactNo,
         "address":address,
-        "email":email,
-        "password":password,
-        "isAllowed":isAllowed,
         "agencyName":agencyName,
         "agencyContactNumber":agencyContactNumber
     })
@@ -49,6 +43,13 @@ module.exports.addStaff=function(req,res){
         })
     }
     //time validation
+    if(entryTime==undefined)
+    {
+        isError=true;
+        err.push({
+            "EntryTime Error":"Please Enter Valid Time"
+        })
+    }
 
     let len=contactNo.length
     if(validator.isNumeric(contactNo.toString())==false || len != 10)
@@ -65,20 +66,7 @@ module.exports.addStaff=function(req,res){
             "Address Error":"Please Enter Valid Address"
         })
     }
-    if(validator.isEmail(email)==false)
-    {
-        isError=true;
-        err.push({
-            "Email Error":"Please Enter Valid Email"
-        })
-    }
-    if(validator.isAlpha(password)==false || password.trim().length==0)
-    {
-        isError=true;
-        err.push({
-            "Password Error":"Please Enter Valid Password"
-        })
-    }
+   
     if(validator.isAlpha(agencyName)==false || agencyName.trim().length==0)
     {
         isError=true;
@@ -138,9 +126,6 @@ module.exports.updateStaff=function(req,res){
     let exitTime=req.body.exitTime
     let contactNo=req.body.contactNo
     let address=req.body.address
-    let email=req.body.email
-    let password=req.body.password
-    let isAllowed=req.body.isAllowed
     let agencyName=req.body.agencyName
     let agencyContactNumber=req.body.agencyContactNumber
 
@@ -154,13 +139,13 @@ module.exports.updateStaff=function(req,res){
             "staffMemberName Error":"Please Enter Valid Name"
         })
     }
-    if(validator.isAlpha(type)==false || type.trim().length==0)
-    {
-        isError=true;
-        err.push({
-            "Type Error":"Please Enter Valid Type"
-        })
-    }
+    // if(validator.isAlpha(type)==false || type.trim().length==0)
+    // {
+    //     isError=true;
+    //     err.push({
+    //         "Type Error":"Please Enter Valid Type"
+    //     })
+    // }
     //time validation
 
     let len=contactNo.length
@@ -178,20 +163,6 @@ module.exports.updateStaff=function(req,res){
             "Address Error":"Please Enter Valid Address"
         })
     }
-    if(validator.isEmail(email)==false)
-    {
-        isError=true;
-        err.push({
-            "Email Error":"Please Enter Valid Email"
-        })
-    }
-    if(validator.isAlpha(password)==false || password.trim().length==0)
-    {
-        isError=true;
-        err.push({
-            "Password Error":"Please Enter Valid Password"
-        })
-    }
     if(validator.isAlpha(agencyName)==false || agencyName.trim().length==0)
     {
         isError=true;
@@ -199,8 +170,8 @@ module.exports.updateStaff=function(req,res){
             "AgencyName Error":"Please Enter Valid AgencyName"
         })
     }
-    let leng=agencyContactNo.length
-    if(validator.isNumeric(agencyContactNo.toString())==false || leng != 10)
+    let leng=agencyContactNumber.length
+    if(validator.isNumeric(agencyContactNumber.toString())==false || leng != 10)
     {
         isError=true;
         err.push({
@@ -220,7 +191,7 @@ module.exports.updateStaff=function(req,res){
     else
     {
         StaffModel.updateOne({_id:staffId},{staffMemberName:staffMemberName, type:type,entryTime:entryTime, exitTime:exitTime,
-            contactNo:contactNo,address:address, email:email, password:password, isAllowed:isAllowed, agencyName:agencyName, agencyContactNumber:agencyContactNumber 
+            contactNo:contactNo,address:address, agencyName:agencyName, agencyContactNumber:agencyContactNumber 
         },function(err,data){
             if(err)
             {
@@ -246,31 +217,28 @@ module.exports.updateStaff=function(req,res){
 
 
 //Delete Staff
-module.exports.deleteStaff=function(req,res){
-    let staffId=req.body.staffId
+module.exports.deleteStaff = function (req, res) {
+    let staffId = req.params.staffId
 
-    StaffModel.deleteOne({_id:staffId},function(err,data){
-        if(err)
-        {
+    StaffModel.deleteOne({ _id: staffId }, function (err, data) {
+        if (err) {
             console.log(err)
             res.json({
-                "status":-1,
-                "data":err,
-                "msg":"Something went Wrong..."
+                "status": -1,
+                "data": err,
+                "msg": "Something went Wrong..."
             })
         }
-        else
-        {
+        else {
             res.json({
-                "status":200,
-                "data":data,
-                "msg":"Staff Member Deleted!!"
+                "status": 200,
+                "data": data,
+                "msg": "Staff Member Deleted!!"
             })
         }
     })
 
 }
-
 
 //List Staff
 module.exports.getAllStaff=function(req,res){

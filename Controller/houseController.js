@@ -4,9 +4,11 @@ const houseModel = require("../model/houseModel")
 
 module.exports.addHouse = function (req, res) {
     let houseDetails = req.body.houseDetails;
+    let user=req.body.user
 
     let house = new houseModel({
-        "houseDetails": houseDetails
+        "houseDetails": houseDetails,
+        "user":user
     })
 
     house.save(function (err, data) {
@@ -30,7 +32,7 @@ module.exports.addHouse = function (req, res) {
 
 //getAllHouses
 module.exports.getAllHouses = function (req, res) {
-    houseModel.find(function (err, data) {
+    houseModel.find().populate("user").exec(function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -56,7 +58,7 @@ module.exports.updateHouse = function (req, res) {
     let houseId = req.body.houseId
     let houseDetails = req.body.houseDetails
 
-    houseModel.updateOne({ _id: houseId }, { houseDetails: houseDetails }, function (err, data) {
+    houseModel.updateOne({ _id: houseId }, { houseDetails: houseDetails, user:user }, function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -79,7 +81,7 @@ module.exports.updateHouse = function (req, res) {
 
 //deleteHouse
 module.exports.deletehouse = function (req, res) {
-    let houseId = req.body.houseId
+    let houseId = req.params.houseId
     houseModel.deleteOne({ _id: houseId }, function (err, data) {
         if (err) {
             console.log(err)

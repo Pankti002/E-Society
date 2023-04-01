@@ -1,25 +1,32 @@
-const PlaceModel=require("../model/placeModel")
-const validator=require("validator")
+const placeModel = require("../model/placeModel")
+const validator = require("validator")
 
 
 //add place
-module.exports.addPlace= function(req,res)
-{
-    let placeName=req.body.placeName
-    let place = new PlaceModel({
-        "placeName": placeName
+module.exports.addPlace = function (req, res) {
+    let placeName = req.body.placeName
+    let rent=req.body.rent
+
+    let place = new placeModel({
+        "placeName": placeName,
+        "rent":rent
     })
 
     let isError = false
     let err = []
 
-    if (placeName==undefined || validator.isAlpha(placeName) == false || placeName.trim().length == 0) {
+    if (placeName == undefined || validator.isAlpha(placeName) == false || placeName.trim().length == 0) {
         isError = true;
         err.push({
             "PlaceName Error": "Please Enter Valid Name"
         })
     }
-
+    if (rent == undefined || validator.isNumeric(rent.toString()) == false || rent.trim().length == 0) {
+        isError = true;
+        err.push({
+            "Rent Error": "Please Enter Rent"
+        })
+    }
 
     if (isError == true) {
         console.log(err)
@@ -30,9 +37,8 @@ module.exports.addPlace= function(req,res)
         })
     }
     else {
-        place.save(function(err,data){
-            if(err)
-            {
+        place.save(function (err, data) {
+            if (err) {
                 console.log(err)
                 res.json({
                     "status": -1,
@@ -40,8 +46,7 @@ module.exports.addPlace= function(req,res)
                     "msg": "Something went Wrong..."
                 })
             }
-            else
-            {
+            else {
                 res.json({
                     "status": 200,
                     "data": data,
@@ -55,7 +60,7 @@ module.exports.addPlace= function(req,res)
 
 //getAllPlaces
 module.exports.getAllPlaces = function (req, res) {
-    PlaceModel.find(function (err, data) {
+    placeModel.find(function (err, data) {
         if (err) {
             console.log(err)
             res.json({
@@ -80,17 +85,25 @@ module.exports.getAllPlaces = function (req, res) {
 module.exports.updatePlace = function (req, res) {
     let placeId = req.body.placeId
     let placeName = req.body.placeName
+    let rent=req.body.rent
+
 
     let isError = false
     let err = []
 
-    if(placeName != undefined)
-    {
-        if (validator.isAlpha(placeName) == false || placeName.trim().length == 0)
-        {
+    if (placeName != undefined) {
+        if (validator.isAlpha(placeName) == false || placeName.trim().length == 0) {
             isError = true;
             err.push({
                 "PlaceName Error": "Please Enter Valid Name"
+            })
+        }
+    }
+    if (placeName != undefined) {
+        if (validator.isNumeric(rent.toString()) == false || rent.trim().length == 0) {
+            isError = true;
+            err.push({
+                "Rent Error": "Please Enter Rent"
             })
         }
     }
@@ -104,17 +117,15 @@ module.exports.updatePlace = function (req, res) {
         })
     }
     else {
-        PlaceModel.updateOne({ _id: placeId }, { placeName: req.body.placeName },function(err,data){
-            if(err)
-            {
+        placeModel.updateOne({ _id: placeId }, { placeName: placeName ,rent:rent}, function (err, data) {
+            if (err) {
                 res.json({
                     "status": -1,
                     "data": err,
                     "msg": "Something went Wrong...."
                 })
             }
-            else
-            {
+            else {
                 res.json({
                     "status": 200,
                     "data": data,
@@ -130,8 +141,8 @@ module.exports.updatePlace = function (req, res) {
 
 //deletePlace
 module.exports.deletePlace = function (req, res) {
-    let placeId = req.body.placeId
-    PlaceModel.deleteOne({ _id: placeId }, function (err, data) {
+    let placeId = req.params.placeId
+    placeModel.deleteOne({ _id: placeId }, function (err, data) {
         if (err) {
             console.log(err)
             res.json({
