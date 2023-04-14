@@ -6,6 +6,8 @@ const staffSchema=new mongoose.Schema({
     exitTime:String,
     contactNo:String,
     address:String,
+    email:String,
+    password:String,
     agencyName:String,
     agencyContactNumber:String
 })

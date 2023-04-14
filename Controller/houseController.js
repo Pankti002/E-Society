@@ -58,7 +58,7 @@ module.exports.updateHouse = function (req, res) {
     let houseId = req.body.houseId
     let houseDetails = req.body.houseDetails
 
-    houseModel.updateOne({ _id: houseId }, { houseDetails: houseDetails, user:user }, function (err, data) {
+    houseModel.updateOne({ _id: houseId }, { houseDetails: houseDetails }, function (err, data) {
         if (err) {
             console.log(err)
             res.json({

@@ -76,6 +76,9 @@ app.put("/event", eventController.updateEvent)
 app.get("/event", eventController.getAllEvents)
 app.delete("/event/:eventId", eventController.deleteEvent)
 app.get("/getEventByDate/:startDate/:endDate",eventController.getCheckDate)
+app.get("/getEventByEndDate/:startDate/:endDate",eventController.getCheckEndDate)
+
+
 
 //Feedback Api
 app.post("/feedback", feedbackController.addfeedback)

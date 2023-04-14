@@ -1,4 +1,5 @@
 const eventModel = require("../Model/eventModel")
+const placeModel = require("../model/placeModel")
 const validator = require("validator")
 const { json } = require("express")
 
@@ -176,6 +177,8 @@ module.exports.getCheckDate = function (req, res) {
     let startDate = req.params.startDate
     let endDate = req.params.endDate
 
+    console.log(startDate+endDate),
+
     // eventModel.find({
     //     $or: [{ eventDate: { $gte: startDate, $lte: endDate } },
     //     { eventEndDate: { $gte: startDate, $lte: endDate } }]
@@ -190,6 +193,7 @@ module.exports.getCheckDate = function (req, res) {
     //15 22 s2 
     //5  22 s2 
 
+//    placeModel.fin
 
     eventModel.find({
         $and: [{ eventDate: { $lte: startDate } },
@@ -211,7 +215,7 @@ module.exports.getCheckDate = function (req, res) {
         else {
             console.log(data);
             if (data.length == 0) {
-                console.log("checkong end date")
+                console.log("checking end date")
                 eventModel.find({
                     eventEndDate: { $gte: startDate, $lte: endDate }
                 }, function (err, data2) {
@@ -224,14 +228,14 @@ module.exports.getCheckDate = function (req, res) {
 
                                 res.json({
                                     "status": 200,
-                                    "data": [],
+                                    "data": "Place Available",
                                     "msg": "NoEvent!!"
                                 })
                             } else {
 
                                 res.json({
                                     "status": 200,
-                                    "data": data3,
+                                    "data": "Place Not Available",
                                     "msg": "Event Retrived!!"
                                 })
                             }
@@ -240,7 +244,7 @@ module.exports.getCheckDate = function (req, res) {
 
                         res.json({
                             "status": 200,
-                            "data": data2,
+                            "data": "Place Not Available",
                             "msg": "Event Retrived!!"
                         })
                     }
@@ -250,7 +254,7 @@ module.exports.getCheckDate = function (req, res) {
 
                 res.json({
                     "status": 200,
-                    "data": "set1",
+                    "data": "Place Not Available",
                     "msg": "Event Retrived!!"
                 })
             }
@@ -265,8 +269,8 @@ module.exports.getCheckDate = function (req, res) {
 module.exports.getCheckEndDate = function (req, res) {
     let startDate = req.params.startDate
     let endDate = req.params.endDate
+    // let placeId=req.params.placeId
 
-    //
     eventModel.find({
         eventDate: { $gte: startDate, $lte: endDate }
     }, function (err, data) {
@@ -282,18 +286,16 @@ module.exports.getCheckEndDate = function (req, res) {
             if (data.length == 0) {
                 res.json({
                     "status": 200,
-                    "data": data,
+                    "data": "Place Avaialable",
                     "msg": "No Event Found!!"
                 })
             } else {
                 res.json({
                     "status": 200,
-                    "data": data,
+                    "data": "Place not Availavle",
                     "msg": "Event Retrived!!"
                 })
             }
         }
     })
 }
-
-
