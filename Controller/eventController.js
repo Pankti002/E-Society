@@ -176,34 +176,14 @@ module.exports.deleteEvent = function (req, res) {
 module.exports.getCheckDate = function (req, res) {
     let startDate = req.params.startDate
     let endDate = req.params.endDate
-
-    console.log(startDate+endDate),
-
-    // eventModel.find({
-    //     $or: [{ eventDate: { $gte: startDate, $lte: endDate } },
-    //     { eventEndDate: { $gte: startDate, $lte: endDate } }]
-    // }
-    //11
-    //12
-    //--13  
-    //15
-    //16      
-    //12 12 s1 
-    //10 15 no 
-    //15 22 s2 
-    //5  22 s2 
-
-//    placeModel.fin
+    let place = req.params.place
 
     eventModel.find({
         $and: [{ eventDate: { $lte: startDate } },
         { eventEndDate: { $gte: endDate } }
-        ]
+        ],place:place
 
     }, function (err, data) {
-
-
-
         if (err) {
             console.log(err)
             res.json({
@@ -213,30 +193,31 @@ module.exports.getCheckDate = function (req, res) {
             })
         }
         else {
+            console.log("first attempt...");
             console.log(data);
             if (data.length == 0) {
                 console.log("checking end date")
                 eventModel.find({
-                    eventEndDate: { $gte: startDate, $lte: endDate }
+                    eventEndDate: { $gte: startDate, $lte: endDate },place:place
                 }, function (err, data2) {
                     if (data2.length == 0) {
                         console.log("checking final condition 10 and 15");
                         eventModel.find({
                             eventDate: { $gte: startDate, $lte: endDate }
-                        }, function (err, data3) {
+                        ,place:place}, function (err, data3) {
                             if (data3.length == 0) {
 
                                 res.json({
                                     "status": 200,
-                                    "data": "Place Available",
-                                    "msg": "NoEvent!!"
+                                    "data": [],
+                                    "msg": "No Event Found!!"
                                 })
                             } else {
 
                                 res.json({
                                     "status": 200,
-                                    "data": "Place Not Available",
-                                    "msg": "Event Retrived!!"
+                                    "data": data3,
+                                    "msg": "Events Retrived!!"
                                 })
                             }
                         })
@@ -244,8 +225,8 @@ module.exports.getCheckDate = function (req, res) {
 
                         res.json({
                             "status": 200,
-                            "data": "Place Not Available",
-                            "msg": "Event Retrived!!"
+                            "data": data2,
+                            "msg": "Events Retrived!!"
                         })
                     }
                 })
@@ -254,48 +235,11 @@ module.exports.getCheckDate = function (req, res) {
 
                 res.json({
                     "status": 200,
-                    "data": "Place Not Available",
-                    "msg": "Event Retrived!!"
+                    "data":  data,
+                    "msg": "Events Retrived!!"
                 })
             }
         }
 
-    })
-}
-
-
-// event end date api
-
-module.exports.getCheckEndDate = function (req, res) {
-    let startDate = req.params.startDate
-    let endDate = req.params.endDate
-    // let placeId=req.params.placeId
-
-    eventModel.find({
-        eventDate: { $gte: startDate, $lte: endDate }
-    }, function (err, data) {
-        if (err) {
-            console.log(err)
-            res.json({
-                "status": -1,
-                "data": err,
-                "msg": "Something went Wrong...."
-            })
-        }
-        else {
-            if (data.length == 0) {
-                res.json({
-                    "status": 200,
-                    "data": "Place Avaialable",
-                    "msg": "No Event Found!!"
-                })
-            } else {
-                res.json({
-                    "status": 200,
-                    "data": "Place not Availavle",
-                    "msg": "Event Retrived!!"
-                })
-            }
-        }
     })
 }

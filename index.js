@@ -13,6 +13,7 @@ const feedbackController = require("./Controller/feedbackController")
 const eventController = require("./Controller/eventController")
 const memberController = require("./Controller/memberController")
 const nonMemebrController = require("./Controller/NonMemberController")
+const adminApiController=require("./Controller/adminApiController")
 
 
 
@@ -26,6 +27,12 @@ app.use(express.urlencoded({extended:true}))
 //Session Api
 app.get("/session", sessionController.getAllUsers)
 app.post("/login", sessionController.login)
+
+//Admin Api
+app.post("/admin", adminApiController.addAdmin)
+app.put("/admin", adminApiController.updateAdmin)
+app.get("/admin", adminApiController.getAllAdmins)
+app.delete("/admin/:id", adminApiController.deleteAdmin)
 
 //User Api
 app.get("/user", userController.getAllUsers)
@@ -75,8 +82,7 @@ app.post("/event", eventController.addEvent)
 app.put("/event", eventController.updateEvent)
 app.get("/event", eventController.getAllEvents)
 app.delete("/event/:eventId", eventController.deleteEvent)
-app.get("/getEventByDate/:startDate/:endDate",eventController.getCheckDate)
-app.get("/getEventByEndDate/:startDate/:endDate",eventController.getCheckEndDate)
+app.get("/getEventByDate/:startDate/:endDate/:place",eventController.getCheckDate)
 
 
 
