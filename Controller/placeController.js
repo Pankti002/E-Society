@@ -1,4 +1,4 @@
-const placeModel = require("../model/placeModel")
+const placeModel = require("../Model/placeModel")
 const validator = require("validator")
 
 

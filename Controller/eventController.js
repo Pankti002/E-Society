@@ -1,5 +1,5 @@
 const eventModel = require("../Model/eventModel")
-const placeModel = require("../model/placeModel")
+const placeModel = require("../Model/placeModel")
 const validator = require("validator")
 const { json } = require("express")
 
@@ -96,6 +96,7 @@ module.exports.updateEvent = function (req, res) {
     let eventEndDate = req.body.eventEndDate
     let eventDetails = req.body.eventDetails
     let rent = req.body.rent
+    let place = req.body.place
 
     let isError = false;
     let err = [];
@@ -130,7 +131,7 @@ module.exports.updateEvent = function (req, res) {
     }
     else {
 
-        eventModel.updateOne({ _id: eventId }, { eventDate: eventDate, eventEndDate: eventEndDate, eventDetails: eventDetails, rent: rent }, function (err, data) {
+        eventModel.updateOne({ _id: eventId }, { eventDate: eventDate, eventEndDate: eventEndDate, eventDetails: eventDetails }, function (err, data) {
             if (err) {
                 console.log(err)
                 res.json({

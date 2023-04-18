@@ -245,14 +245,6 @@ module.exports.updateUser = function (req, res) {
         }
     }
 
-    if (password != undefined) {
-        if (validator.isAlpha(password) == false || password.trim().length == 0) {
-            isError = true;
-            err.push({
-                "Password Error": "Please Enter Valid Password"
-            })
-        }
-    }
 
 
     if (isError) {
